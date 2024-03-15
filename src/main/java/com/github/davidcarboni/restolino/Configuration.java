@@ -31,6 +31,8 @@ public class Configuration {
     public static final String AUTH_PASSWORD = "restolino.password";
     public static final String AUTH_REALM = "restolino.realm";
 
+    public static final String JETTY_REQUEST_HEADER_SIZE = "JETTY_REQUEST_HEADER_SIZE";
+
     /**
      * The Jetty server port.
      */
@@ -112,6 +114,11 @@ public class Configuration {
      */
     public String realm;
 
+    /**
+     * The Jetty server request header size.
+     */
+    public int jettyRequestHeaderSize = 8192;
+
     @Override
     public String toString() {
 
@@ -132,6 +139,7 @@ public class Configuration {
         result.append("\n - classesInClasspath:\t" + classesInClasspath);
         result.append("\n - classesUrl:\t" + classesUrl);
         result.append("\n - packagePrefix:\t" + packagePrefix);
+        result.append("\n - jettyRequestHeaderSize:\t" + jettyRequestHeaderSize);
 
         // Basic authentication
         result.append("\nBasic Auth:");
@@ -161,12 +169,37 @@ public class Configuration {
         String password = getValue(AUTH_PASSWORD);
         String realm = getValue(AUTH_REALM);
 
+        // server request header size:
+        String requestHeaderSize = getValue(JETTY_REQUEST_HEADER_SIZE);
+        // if the env var is not set use default value
+        if (StringUtils.isBlank(requestHeaderSize)) {
+            requestHeaderSize = Integer.toString(this.jettyRequestHeaderSize);
+        }
+
         // Set up the configuration:
         configurePort(port);
         configureMaxThreads(maxThreads);
         configureFiles(files);
         configureClasses(classes);
         configureAuthentication(username, password, realm);
+        configureJettyRequestHeaderSize(requestHeaderSize);
+    }
+
+    /**
+      * Configures the server request header size,
+      * default is 8192 bytes.
+      *
+      * @param requestHeaderSize The value of the {@value #JETTY_REQUEST_HEADER_SIZE} parameter.
+      */
+    void configureJettyRequestHeaderSize(String requestHeaderSize) {
+        if (StringUtils.isNotBlank(requestHeaderSize)) {
+            try {
+                this.jettyRequestHeaderSize = Integer.parseInt(requestHeaderSize);
+                log.info("Using jettyRequestHeaderSize {}", this.jettyRequestHeaderSize);
+            } catch (NumberFormatException e) {
+                log.info("Unable to parse server JETTY_REQUEST_HEADER_SIZE variable ({}). Defaulting to jettyRequestHeaderSize {}", requestHeaderSize, this.jettyRequestHeaderSize);
+            }
+        }
     }
 
     /**
