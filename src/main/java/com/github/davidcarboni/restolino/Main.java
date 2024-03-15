@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.http.HttpVersion;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -51,6 +52,7 @@ public class Main {
             ServerConnector http = new ServerConnector(server, new HttpConnectionFactory());
             http.setPort(configuration.port);
             server.addConnector(http);
+            configureRequestHeaderSize(http, configuration.jettyRequestHeaderSize);
 
             // Create the handlers
             mainHandler = new MainHandler();
@@ -95,6 +97,13 @@ public class Main {
         } finally {
             ClassReloader.shutdown();
         }
+    }
+
+    private static void configureRequestHeaderSize(ServerConnector connector, int headerSize) {
+        HttpConnectionFactory cf = (HttpConnectionFactory)
+                connector.getConnectionFactory(HttpVersion.HTTP_1_1.toString());
+        cf.getHttpConfiguration().setRequestHeaderSize(headerSize);
+        log.info("Configuring request header size to {}", headerSize);
     }
 
 }
