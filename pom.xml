@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.onsdigital</groupId>
     <artifactId>restolino</artifactId>
-    <version>undefined</version>
+    <version>0.8.0</version>
     <packaging>jar</packaging>
     <name>Restolino</name>
     <description>

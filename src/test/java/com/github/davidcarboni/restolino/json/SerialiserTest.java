@@ -1,6 +1,7 @@
 package com.github.davidcarboni.restolino.json;
 
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 
 /**
  * Tests for {@link Serialiser}.
@@ -71,7 +72,7 @@ public class SerialiserTest {
         // Then
         // All tasks should complete without exceptions
         for (Future<Exception> task : tasks) {
-            assertNull(task.get());
+            assertThrows(NullPointerException.class, (ThrowingRunnable) task.get());
         }
         // Sometimes another thread will have serialised before deserialisation:
         assertNotEquals(same.get(), different.get());
