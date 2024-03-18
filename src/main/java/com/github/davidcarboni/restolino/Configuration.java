@@ -170,11 +170,8 @@ public class Configuration {
         String realm = getValue(AUTH_REALM);
 
         // server request header size:
+        System.setProperty(JETTY_REQUEST_HEADER_SIZE, StringUtils.EMPTY);
         String requestHeaderSize = getValue(JETTY_REQUEST_HEADER_SIZE);
-        // if the env var is not set use default value
-        if (StringUtils.isBlank(requestHeaderSize)) {
-            requestHeaderSize = Integer.toString(this.jettyRequestHeaderSize);
-        }
 
         // Set up the configuration:
         configurePort(port);
@@ -192,13 +189,11 @@ public class Configuration {
       * @param requestHeaderSize The value of the {@value #JETTY_REQUEST_HEADER_SIZE} parameter.
       */
     void configureJettyRequestHeaderSize(String requestHeaderSize) {
-        if (StringUtils.isNotBlank(requestHeaderSize)) {
-            try {
-                this.jettyRequestHeaderSize = Integer.parseInt(requestHeaderSize);
-                log.info("Using jettyRequestHeaderSize {}", this.jettyRequestHeaderSize);
-            } catch (NumberFormatException e) {
-                log.info("Unable to parse server JETTY_REQUEST_HEADER_SIZE variable ({}). Defaulting to jettyRequestHeaderSize {}", requestHeaderSize, this.jettyRequestHeaderSize);
-            }
+        try {
+            this.jettyRequestHeaderSize = Integer.parseInt(requestHeaderSize);
+            log.info("Using jettyRequestHeaderSize {}", this.jettyRequestHeaderSize);
+        } catch (NumberFormatException e) {
+            log.info("Unable to parse server JETTY_REQUEST_HEADER_SIZE variable ({}). Defaulting to jettyRequestHeaderSize {}", requestHeaderSize, this.jettyRequestHeaderSize);
         }
     }
 
