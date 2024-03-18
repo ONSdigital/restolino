@@ -183,8 +183,7 @@ public class Configuration {
     }
 
     /**
-      * Configures the server request header size,
-      * default is 8192 bytes.
+      * Configures the server request header size.
       *
       * @param requestHeaderSize The value of the {@value #JETTY_REQUEST_HEADER_SIZE} parameter.
       */
