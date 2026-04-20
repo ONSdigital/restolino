@@ -230,6 +230,7 @@
                 </executions>
                 <!-- configuration for mvn ossindex:audit -->
                 <configuration>
+                    <authId>ossindex</authId>
                     <!-- if CVSS >= 7.0 (high or critical) then ERROR else WARN -->
                     <fail>true</fail>
                     <cvssScoreThreshold>7.0</cvssScoreThreshold>
