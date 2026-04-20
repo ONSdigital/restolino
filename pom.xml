@@ -41,7 +41,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <!-- Jersey: -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -234,6 +233,17 @@
                     <!-- if CVSS >= 7.0 (high or critical) then ERROR else WARN -->
                     <fail>true</fail>
                     <cvssScoreThreshold>7.0</cvssScoreThreshold>
+                    <excludeCoordinates>
+                        <!--
+                            Jira epic to remove the following exclusion: DIS-4777
+                         -->
+                        <exclude>
+                            <groupId>org.eclipse.jetty</groupId>
+                            <artifactId>jetty-http</artifactId>
+                            <version>9.4.58.v20250814</version>
+                        </exclude>
+                        <!-- End DIS-4777 -->
+                    </excludeCoordinates>
                 </configuration>
             </plugin>
 
