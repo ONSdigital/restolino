@@ -6,6 +6,12 @@ if [[ -z "${OSSINDEX_USERNAME:-}" || -z "${OSSINDEX_TOKEN:-}" ]]; then
   exit 1
 fi
 
+# Stop if settings already exist to avoid overwriting
+if [[ -f ~/.m2/settings.xml ]]; then
+  echo "Maven settings file already exists - not overwriting." >&2
+  exit 1
+fi
+
 # Create Maven settings directory and file
 mkdir -p ~/.m2
 cat > ~/.m2/settings.xml << EOF
