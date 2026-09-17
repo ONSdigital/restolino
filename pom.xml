@@ -233,17 +233,18 @@
                     <!-- if CVSS >= 7.0 (high or critical) then ERROR else WARN -->
                     <fail>true</fail>
                     <cvssScoreThreshold>7.0</cvssScoreThreshold>
-                    <excludeCoordinates>
+                    <excludeVulnerabilityIds>
+                    <!-- Note - OSS Index suppressions are global, not per dependency -->
                         <!--
                             Jira epic to remove the following exclusion: DIS-4777
+                            This is to upgrade jetty
                          -->
-                        <exclude>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-http</artifactId>
-                            <version>9.4.58.v20250814</version>
-                        </exclude>
+                        <exclude>CVE-2026-2332</exclude>
+                        <exclude>CVE-2026-10050</exclude>
+                        <exclude>CVE-2026-12611</exclude>
+                        <exclude>CVE-2026-19203</exclude>
                         <!-- End DIS-4777 -->
-                    </excludeCoordinates>
+                    </excludeVulnerabilityIds>
                 </configuration>
             </plugin>
 
